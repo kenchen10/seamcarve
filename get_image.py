@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def get_matrix(img):
-    return cv2.imread(img)
+    ret = cv2.imread(img)
+    ret = cv2.cvtColor(ret, cv2.COLOR_BGR2RGB)
+    return ret
 
 def get_energy(img):
     del_x = np.square(np.roll(img, -1, axis = 0) - np.roll(img, 1, axis = 0))
@@ -12,8 +14,8 @@ def get_energy(img):
     return energy
 
 def main():
-    plt.imshow(get_energy(img))
-    plt.gray()
+    plt.imshow(get_matrix("images/me.jpg"))
+    # plt.gray()
     plt.show()
 
 if __name__ == '__main__':
