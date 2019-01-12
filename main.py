@@ -4,32 +4,16 @@ from matplotlib import style
 import cv2
 from SeamRemover import SeamRemover
 
-
-style.use('fivethirtyeight')
-fig = plt.figure()
-ax1 = fig.add_subplot(1,1,1)
-
 def main():
     # np.set_printoptions(threshold=np.nan)
+    plt.ion()
     remover = SeamRemover("images/spongebob.jpg")
-    fig,ax = plt.subplots(1,1)
-    image = remover.img
-    img = ax.imshow(image)
-    #remover2 = SeamRemover("images/me.jpg")
-    #seam = remover.findVerticalSeam().astype(int)
-    for i in range(200):
+    for i in range(2):
         seam = remover.findVerticalSeam().astype(int)
         remover.removeVerticalSeam(seam)
-        img.set_data(remover.img)
-        fig.canvas.draw_idle()
-        # plt.imshow(remover.img)
-        # plt.show()
-    # n = len(remover.energy)
-    # for row in np.arange(n - 1, 0, -1):
-    #     remover.img[row][seam[n - 1 - row]] = [255,0,0]
-
-    # plt.imshow(remover.img)
-    # plt.show()
+        plt.figure(1); plt.clf()
+        plt.imshow(remover.img)
+        plt.pause(3)
 
 if __name__ == '__main__':
     main()
