@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 def get_matrix(img):
     ret = cv2.imread(img)
+    ret = cv2.bitwise_not(ret)
     ret = cv2.cvtColor(ret, cv2.COLOR_BGR2RGB)
     return ret
 

@@ -1,5 +1,6 @@
 import numpy as np
 from get_image import get_energy, get_matrix
+import cv2
 
 class SeamRemover:
 
@@ -9,7 +10,7 @@ class SeamRemover:
         self.h = self.img.shape[0]
         self.energy = get_energy(self.img)
 
-    def findVerticalSeam(self):
+    def findVerticalSeamDP(self):
         m_mat = self.energy.copy()
         seam = np.array([])
         for r in np.arange(1, self.h):
@@ -50,12 +51,31 @@ class SeamRemover:
     def removeVerticalSeam(self, seam):
         n = len(self.energy)
         new_img = np.zeros(shape=(self.h, self.w - 1, 3))
+        new_energy = np.zeros(shape=(self.h, self.w - 1))
+        # pool = multiprocessing.Pool()
+        # pool.map(self.remove_elem, np.arange(0, n, 1))
         for row in np.arange(0, n, 1):
-            col = seam[n - 2 - row]
+            col = seam[len(self.energy) - 2 - row]
             new_row = np.delete(self.img[row], col, axis = 0)
             new_img[row] = new_row
+            new_row_energy = np.delete(self.energy[row], col, axis = 0)
+            new_energy[row] = new_row_energy
         self.w -= 1
         self.img = new_img
-        self.energy = get_energy(self.img)
+        self.energy = new_energy
+
+    def remove_elem(self, row):
+        col = self.seam[len(self.energy) - 2 - row]
+        new_row = np.delete(self.img[row], col, axis = 0)
+        self.new_img[row] = new_row
+        new_row_energy = np.delete(self.energy[row], col, axis = 0)
+        self.new_energy[row] = new_row_energy
+
 
     #def removeHorizontalSeam(seam):
+
+def main():
+    remover = SeamRemover("images/153x197.jpg")
+
+if __name__ == '__main__':
+    main()
