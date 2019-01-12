@@ -2,10 +2,12 @@ import matplotlib.pyplot as plt
 import cv2
 from SeamRemover import SeamRemover
 import timeit
+from skimage import transform
+from skimage import filters
 
 def animate(iterations):
     start = timeit.default_timer()
-    remover = SeamRemover("images/spongebob.jpg")
+    remover = SeamRemover("images/200x200.jpg")
     for i in range(iterations):
         seam = remover.findVerticalSeamDP().astype(int)
         remover.removeVerticalSeam(seam)
@@ -19,7 +21,7 @@ def main():
     # np.set_printoptions(threshold=np.nan)
     plt.figure(1); plt.clf()
     plt.axis('off')
-    animate(20)
+    animate(200)
 
 if __name__ == '__main__':
     main()
