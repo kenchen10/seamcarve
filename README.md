@@ -1,1 +1,3 @@
 # seamcarve
+
+Python, NumPy, OpenCV
