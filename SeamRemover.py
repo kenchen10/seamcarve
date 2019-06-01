@@ -2,7 +2,7 @@ import numpy as np
 from get_image import get_energy, get_matrix
 import cv2
 
-fast = True
+fast = False
 
 class SeamRemover:
 
@@ -101,7 +101,15 @@ class SeamRemover:
                 m = m
         return seam
 
-    #def findHorizontalSeam():
+    def findHorizontalSeam(self):
+        self.img = np.rot90(self.img, 3)
+        self.energy = np.rot90(self.energy, 3)
+        self.h, self.w = self.w, self.h
+        seam = self.findVerticalSeamDP()
+        self.h, self.w = self.w, self.h
+        self.img = np.rot90(self.img, 3)
+        self.energy = np.rot90(self.energy, 3)
+        return seam
 
     def findVerticalSeamDPMAX(self):
         """
@@ -177,7 +185,15 @@ class SeamRemover:
     #     self.m_mat[row] = new_row_m_mat
 
 
-    #def removeHorizontalSeam(seam):
+    def removeHorizontalSeam(self, seam):
+        self.img = np.rot90(self.img, 3)
+        self.energy = np.rot90(self.energy, 3)
+        self.h, self.w = self.w, self.h
+        self.removeVerticalSeam(seam)
+        self.h, self.w = self.w, self.h
+        self.img = np.rot90(self.img, 3)
+        self.energy = np.rot90(self.energy, 3)
+
 
 def main():
     remover = SeamRemover("images/153x197.jpg")

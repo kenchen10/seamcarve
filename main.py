@@ -14,18 +14,20 @@ ap.add_argument("-d", "--direction", type=str,
 	default="vertical", help="seam removal direction")
 ap.add_argument("-w", "--write", type=bool,
 	default=False, help="write image")
+ap.add_argument("-l", "--iterations", type=int,
+	default=10, help="Number of iterations")
 # ap.add_argument("-n", "--filename", type=str,
 # 	default=r"test/img_name.png", help="name your file")
 args = vars(ap.parse_args())
 
-# Usage: python main.py --image img_name.jpg --direction vertical
+# Usage: python main.py --image img_name.jpg --direction vertical --iterations 10
 
-fast = True
+fast = False
 remover = SeamRemover("images/"+args["image"])
 
 def animate(iterations, f):
     """
-    Animates each iteration of seam carving. 
+    Animates each iteration of seam carving.
     """
     start = timeit.default_timer()
     for i in range(iterations):
@@ -33,7 +35,7 @@ def animate(iterations, f):
             seam = f().astype(int)
             remover.removeVerticalSeam(seam)
         else:
-            seam = f().astype(int)
+            seam = remover.findHorizontalSeam().astype(int)
             remover.removeHorizontalSeam(seam)
         plt.imshow(remover.img)
         plt.title("iteration: " + str(i))
@@ -53,7 +55,7 @@ def main():
         f = remover.findVerticalSeamDP
     else:
         f = remover.findVerticalSeamDPFaster
-    animate(10, f)
+    animate(args["iterations"], f)
 
 if __name__ == '__main__':
     main()
