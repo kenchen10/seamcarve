@@ -1,6 +1,8 @@
 # seamcarve
 
-Python, NumPy, OpenCV
+An implementation of Seam Carving for Content-Aware Image Resizing described in [this paper](http://www.faculty.idc.ac.il/arik/SCWeb/imret/imret.pdf). 
+
+Implemented using Python, NumPy, OpenCV.
 
 ## Command-line Usage: 
 ```
